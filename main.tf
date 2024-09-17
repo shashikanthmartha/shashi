@@ -1,4 +1,4 @@
-module "vpc" {
+ module "vpc" {
   source = "./modules/VPC"
   vpc_cidr = var.vpc_cidr
   subnet_cidr_public = var.subnet_cidr_public
@@ -50,29 +50,18 @@ module "ELB_app" {
   security_groups = [module.web_sg.this_security_group_id]
 }
 module "aws_autoscaling_group_app" {
-  source = "./modules/autoscalingapp"
+  source = "./modules/aws_autoscalingapp"
   launch_configuration_app = module.aws_launch_configuration_app.launch_configuration_name_app
-  min_size = 1
-  max_size = 3
-  desired_capacity = 2
-  vpc_zone_identifier = module.vpc.public_subnets
-  name = var.aws_autoscaling_group_name_app
-  health_check_type = "ELB"
-  health_check_grace_period = 300
-  load_balancers = [module.ELB_app.ELB]
+  aws_autoscaling_group_name_app = var.aws_autoscaling_group_name_app
+  vpc_zone_identifier = module.vpc.app_private_subnets
 }
-module "aws_autoscaling_group" {
-  source = "./modules/autoscalingweb"
+
+module "aws_autoscaling_group_web" {
+  source = "./modules/aws_autoscalingweb"
   launch_configuration_web = module.aws_launch_configuration_web.launch_configuration_name_web
-  min_size = 1
-  max_size = 3
-  desired_capacity = 2
-  vpc_zone_identifier = module.vpc.public_subnets
-  name = var.aws_autoscaling_group_name_web
-  health_check_type = "ELB"
-  health_check_grace_period = 300
-  load_balancers = [module.ELB_web.ELB]
-}
+  aws_autoscaling_group_name_web = var.aws_autoscaling_group_name_web
+  vpc_zone_identifier = module.vpc.web_private_subnets
+  }
 module "aws_autoscaling_attachment_web" {
   source = "./modules/awsautoscalingattachmentweb"
   autoscaling_group_name_web = module.aws_autoscaling_group.aws_autoscaling_group_name_web
