@@ -68,12 +68,12 @@ module "aws_autoscaling_group_web" {
   }
 module "aws_autoscaling_attachment_web" {
   source = "./modules/autoscalingattachmentweb"
-  autoscaling_group_name_web = module.aws_autoscaling_group.aws_autoscaling_group_name_web
+  autoscaling_group_name_web = module.aws_autoscaling_group_web.aws_autoscaling_group_name_web
   elb_web = module.ELB_web.elb_web
   elb_app = module.ELB_app.elb_app
 }
 module "aws_autoscaling_attachment_app" {
   source = "./modules/autoscalingattachmentapp"
-  autoscaling_group_name_app = module.aws_autoscaling_group.aws_autoscaling_group_name_app
+  autoscaling_group_name_app = module.aws_autoscaling_group_app.aws_autoscaling_group_name_app
   elb_app = module.ELB_app.elb_app
 }
