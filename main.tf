@@ -15,6 +15,10 @@ module "db_sg" {
   vpc_id = module.vpc.vpc_id
   web_sg_id = module.web_sg.security_group_id
 }
+module "db_subnet_group" {
+  source = "./modules/aws_db_subnet_group"
+  db_subenet_ids = module.vpc.database_subnets
+}
 module "rds" {
   source = "./modules/RDS"
   cluster_identifier = var.cluster_identifier
@@ -24,11 +28,9 @@ module "rds" {
   database_name = var.database_name
   master_username = var.master_username
   master_password = var.master_password
-  db_security_group_ids = module.db_sg.security_group_id
-  db_subnet_group_name = module.vpc.db_subnet_group_name
+  db_security_group_ids = [module.db_sg.db_security_group_id]
+  db_subnet_group_name = module.db_subnet_group.db_subnet_group_name
 }
-
-
 module "aws_launch_configuration_web" {
   source = "./modules/launchconfigweb"
   security_groups = [module.web_sg.this_security_group_id]
