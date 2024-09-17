@@ -35,23 +35,23 @@ module "rds" {
 
 module "aws_launch_configuration_web" {
   source = "./modules/launchconfigweb"
-  security_groups = [module.web_sg.this_security_group_id]
+  security_groups = [module.web_sg.security_group_id]
   web_instance_type = var.web_instance_type
   web_AMI = var.web_AMI
 }
 module "aws_launch_configuration_app" {
   source = "./modules/launchconfigapp"
-  security_groups = [module.web_sg.this_security_group_id]
+  security_groups = [module.web_sg.security_group_id]
   app_instance_type = var.app_instance_type
   app_AMI = var.app_AMI
 }
 module "ELB_web" {
   source = "./modules/AWSELB_web"
-  security_groups = [module.web_sg.this_security_group_id]
+  security_groups = [module.web_sg.security_group_id]
 }
 module "ELB_app" {
   source = "./modules/AWSELB_app"
-  security_groups = [module.web_sg.this_security_group_id]
+  security_groups = [module.web_sg.security_group_id]
 }
 module "aws_autoscaling_group_app" {
   source = "./modules/aws_autoscalingapp"
