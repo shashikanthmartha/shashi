@@ -1,4 +1,4 @@
- module "vpc" {
+module "vpc" {
   source = "./modules/VPC"
   vpc_cidr = var.vpc_cidr
   subnet_cidr_public = var.subnet_cidr_public
@@ -28,9 +28,11 @@ module "rds" {
   database_name = var.database_name
   master_username = var.master_username
   master_password = var.master_password
-  db_security_group_ids = [module.db_sg.db_security_group_id]
   db_subnet_group_name = module.db_subnet_group.db_subnet_group_name
+  db_security_group_ids = [module.db_sg.db_security_group_id]
 }
+
+
 module "aws_launch_configuration_web" {
   source = "./modules/launchconfigweb"
   security_groups = [module.web_sg.this_security_group_id]
@@ -65,13 +67,13 @@ module "aws_autoscaling_group_web" {
   vpc_zone_identifier = module.vpc.web_private_subnets
   }
 module "aws_autoscaling_attachment_web" {
-  source = "./modules/awsautoscalingattachmentweb"
+  source = "./modules/autoscalingattachmentweb"
   autoscaling_group_name_web = module.aws_autoscaling_group.aws_autoscaling_group_name_web
   elb_web = module.ELB_web.elb_web
   elb_app = module.ELB_app.elb_app
 }
 module "aws_autoscaling_attachment_app" {
-  source = "./modules/awsautoscalingattachmentapp"
+  source = "./modules/autoscalingattachmentapp"
   autoscaling_group_name_app = module.aws_autoscaling_group.aws_autoscaling_group_name_app
   elb_app = module.ELB_app.elb_app
 }
