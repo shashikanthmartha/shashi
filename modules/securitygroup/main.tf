@@ -15,8 +15,8 @@ resource "azurerm_network_security_group" "web-nsg" {
     destination_port_range     = "22"
   }
   security_rule {
-    name                       = "ssh-rule-1"
-    priority                   = 101
+    name                       = "ssh-rule-2"
+    priority                   = 102
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
