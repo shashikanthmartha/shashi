@@ -12,7 +12,18 @@ resource "azurerm_network_security_group" "web-nsg" {
     source_address_prefix      = "*"
     source_port_range          = "*"
     destination_address_prefix = "*"
-    destination_port_range     = ["22", "80"]
+    destination_port_range     = "22"
+  }
+  security_rule {
+    name                       = "ssh-rule-1"
+    priority                   = 101
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_address_prefix      = "*"
+    source_port_range          = "*"
+    destination_address_prefix = "*"
+    destination_port_range     = "80"
   }
   
   security_rule {
