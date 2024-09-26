@@ -101,10 +101,34 @@ resource "azurerm_virtual_machine" "app-vm" {
   }
 
   os_profile {
-    computer_name = var.app_host_name
-    admin_username = var.app_username
-    admin_password = var.app_os_password
+    computer_name = var.web_host_name
+    admin_username = var.web_username
+    admin_password = var.web_os_password
+    custom_data = base64encode(<<-EOF
+                  #cloud-config
+                  package_update: true
+                  package_upgrade: true
+                  packages:
+                    - nginx
+                  write_files:
+                    - path: /var/www/html/index.html
+                      content: |
+                        <html>
+                        <head>
+                          <title>Welcome to app-vm</title>
+                        </head>
+                        <body>
+                          <h1>Hello, World!</h1>
+                          <p>This is the index.html file deployed via Terraform.</p>
+                        </body>
+                        </html>
+                  runcmd:
+                    - systemctl enable nginx
+                    - systemctl start nginx
+                  EOF
+                )
   }
+
 
   os_profile_linux_config {
     disable_password_authentication = false
