@@ -5,17 +5,15 @@ terraform {
       version = "4.3.0"
     }
   }
+  backend "azurerm" {
+  resource_group_name   = "first_rg"
+  storage_account_name  = "shashiterraformstate"
+  container_name        = "tfsatatefile"
+  key                   = "terraform.tfstate"
+}
 }
 
 provider "azurerm" {
   # Configuration options
 }
-
-  backend "s3" {
-    bucket = "shashikanth-s3"
-    key    = "dev/terraform.tfstate"
-    region = "us-east-1"
-  }
-}
-
 
