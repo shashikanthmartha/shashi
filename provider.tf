@@ -1,10 +1,15 @@
 terraform {
   required_providers {
-    aws = {
-      source = "hashicorp/aws"
-      version = "5.16.1"
+    azurerm = {
+      source = "hashicorp/azurerm"
+      version = "4.3.0"
     }
   }
+}
+
+provider "azurerm" {
+  # Configuration options
+}
 
   backend "s3" {
     bucket = "shashikanth-s3"
@@ -13,6 +18,4 @@ terraform {
   }
 }
 
-provider "aws" {
-  region = "us-east-1"
-}
+
